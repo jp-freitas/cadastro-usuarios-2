@@ -18,8 +18,7 @@ export const db = await mysql.createPool({
     - Em ambiente local, geralmente usamos o servidor local da máquina.
     - O valor deve ser uma string.
   */
-  host: ______________________,
-
+  host:"127.0.0.1",  
   /*
     LACUNA 2:
     Informe o usuário do MySQL.
@@ -27,8 +26,8 @@ export const db = await mysql.createPool({
     Orientações:
     - Em muitos ambientes locais, o usuário padrão costuma ser o administrador do MySQL.
     - O valor deve ser uma string.
-  */
-  user: ______________________,
+  */ 
+  user: "root",
 
   /*
     LACUNA 3:
@@ -39,7 +38,7 @@ export const db = await mysql.createPool({
     - O valor deve ser uma string.
     - Caso não exista senha no ambiente local, analise com o professor como preencher.
   */
-  password: ________________________,
+  password: "admin" ,
 
   /*
     LACUNA 4:
@@ -49,7 +48,7 @@ export const db = await mysql.createPool({
     - O nome deve ser o mesmo banco criado no script SQL.
     - O valor deve ser uma string.
   */
-  database: _________________________________,
+  database:  "sistema_usuarios",
   /**
    * Verificar a porta de conexão com o banco de dados.
    * 
@@ -57,7 +56,7 @@ export const db = await mysql.createPool({
    * - Verificar a conexão que esstá no MySQL Workbench e porta que está nessa
    * conexão.
    */
-  port: __________________,
+  port:  "3307                                                                                                                                                                            ",
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
