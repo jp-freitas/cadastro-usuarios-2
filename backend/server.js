@@ -145,7 +145,7 @@ app.post("/users", async (req, res) => {
       - Use parâmetros para evitar concatenar valores diretamente no SQL
     */
     db.prepare(
-      "INSERT INTO users (name, email, password_hash) VALUE (?, ?, ?)"
+      "INSERT INTO users (name, email, password_hash) VALUES (?, ?, ?)"
     ).run(name, email, passwordHash);
 
     return res.status(201).json({

@@ -94,8 +94,8 @@ form.addEventListener("submit", async function (event) {
       - O corpo da requisição deve enviar name, email e password
       - Use JSON.stringify()
     */
-    const response = await fetch("http://localhost:3000/users", {
-      method: POST,
+    const response = await fetch("https://redesigned-carnival-r7gqvqgg77xgcg45-3000.app.github.dev/users", {
+      method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
