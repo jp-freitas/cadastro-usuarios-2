@@ -21,7 +21,7 @@ import { db } from "./db.js";
   - Use a função express()
   - Armazene o resultado em uma constante chamada app
 */
-const app = ________________________________;
+const app = express();
 
 /*
   Os middlewares abaixo permitem:
@@ -39,7 +39,7 @@ app.use(cors());
   - Use app.use()
   - Use o middleware próprio do Express para JSON
 */
-________________________________;
+app.use(express.json());
 
 app.post("/users", async (req, res) => {
   try {
@@ -51,7 +51,7 @@ app.post("/users", async (req, res) => {
       - Os dados vêm dentro de req.body
       - Use desestruturação de objeto
     */
-    const { ________________________________ } = req.body;
+    const { name, email, password } = req.body;
 
     /*
       LACUNA 4:
@@ -62,7 +62,7 @@ app.post("/users", async (req, res) => {
       - Use operador lógico OU
       - Caso algum campo esteja ausente, retorne status 400
     */
-    if (_______________________________) {
+    if (!name || !email || !password) {
       return res.status(400).json({
         message: "Nome, e-mail e senha são obrigatórios."
       });
@@ -76,7 +76,7 @@ app.post("/users", async (req, res) => {
       - Use a propriedade length da senha
       - Caso a senha tenha menos de 8 caracteres, retorne status 400
     */
-    if (_______________________________) {
+    if (password.length < 8) {
       return res.status(400).json({
         message: "A senha deve ter pelo menos 8 caracteres."
       });
@@ -93,10 +93,9 @@ app.post("/users", async (req, res) => {
       - O valor do e-mail deve ser passado como parâmetro
       - Armazene o resultado em uma constante chamada existingUser
     */
-    const [existingUser] = await db.execute(
-      ________________________________,
-      [_______________________________]
-    );
+    const existingUser = db.prepare(
+      "SELECT id_users FROM users WHERE email = ?"
+      ).get(email);
 
     /*
       LACUNA 7:
@@ -107,7 +106,7 @@ app.post("/users", async (req, res) => {
       - Se a lista possuir algum item, significa que o e-mail já existe
       - Nesse caso, retorne status 409
     */
-    if (_______________________________) {
+    if (existingUser) {
       return res.status(409).json({
         message: "Este e-mail já está cadastrado."
       });
@@ -122,7 +121,7 @@ app.post("/users", async (req, res) => {
       - Use um valor numérico adequado para ambiente de estudo
       - Armazene na constante saltRounds
     */
-    const saltRounds = ________________________________;
+    const saltRounds = 12;
 
     /*
       LACUNA 9:
@@ -134,7 +133,7 @@ app.post("/users", async (req, res) => {
       - Passe a senha original e a quantidade de rounds
       - Armazene o resultado em uma constante chamada passwordHash
     */
-    const passwordHash = ________________________________;
+    const passwordHash = await bcrypt.hash(password, saltRounds);
 
     /*
       LACUNA 10:
@@ -146,18 +145,13 @@ app.post("/users", async (req, res) => {
       - Os campos são name, email e password_hash
       - Use parâmetros para evitar concatenar valores diretamente no SQL
     */
-    await db.execute(
-      ________________________________,
-      [
-        ________________________________,
-        ________________________________,
-        ________________________________
-      ]
-    );
+     db.prepare(
+       "INSERT INTO users (name, email, password_hash)VALUES (?,?,?)"
+     ).run(name, email, passwordHash);
 
     return res.status(201).json({
       message: "Usuário criado com sucesso."
-    });
+    }.run(name, email, passwordHash));
 
   } catch (error) {
     console.error(error);
@@ -177,4 +171,6 @@ app.post("/users", async (req, res) => {
   - A porta deve ser 3000
   - Exiba uma mensagem no console informando que o servidor está rodando
 */
-________________________________;
+app.listen(3000, ()=> {
+  console.log("servidor rodando em http://localhost:3000");
+});
