@@ -123,7 +123,7 @@ form.addEventListener("submit", async function (event) {
       - Caso a resposta não esteja ok, exiba a mensagem retornada pela API
       - Depois, use return para parar a execução
     */
-    if (!pesponse.ok) {
+    if (!response.ok) {
       showMessage(data.message || "Erro ao criar usuário.", "error");
       return;
     }
