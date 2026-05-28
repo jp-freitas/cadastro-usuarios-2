@@ -94,8 +94,8 @@ form.addEventListener("submit", async function (event) {
       - O corpo da requisição deve enviar name, email e password
       - Use JSON.stringify()
     */
-    const response = await fetch("http://localhost:3000/users", {
-      method: POST,
+    const response = await fetch("https://bug-free-rotary-phone-6r9wj9j79r62r5pg-3000.app.github.dev/users", {
+      method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
@@ -142,6 +142,7 @@ form.addEventListener("submit", async function (event) {
     form.reset();
 
   } catch (error) {
+    console.log(error)
     showMessage("Não foi possível conectar ao servidor.", "error");
   } finally {
     button.disabled = false;
