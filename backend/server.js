@@ -146,12 +146,12 @@ app.post("/users", async (req, res) => {
       - Use parâmetros para evitar concatenar valores diretamente no SQL
     */
      db.prepare(
-       "INSERT INTO user (name, email, password_hash)VALUES (?,?,?)"
+       "INSERT INTO users (name, email, password_hash)VALUES (?,?,?)"
      ).run(name, email, passwordHash);
 
     return res.status(201).json({
       message: "Usuário criado com sucesso."
-    }.run(name, email, passworddHash));
+    }.run(name, email, passwordHash));
 
   } catch (error) {
     console.error(error);
