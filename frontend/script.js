@@ -14,8 +14,9 @@ form.addEventListener("submit", async function (event) {
     - Use .value para pegar o valor
     - Use .trim() para remover espaços extras
   */
-  const name = ________________________________;
-
+  const name = document.getElementById("name").value.trim();
+  console.log(name);
+  console.log(!name);
   /*
     LACUNA 2:
     Capture o valor digitado no campo de e-mail.
@@ -26,8 +27,9 @@ form.addEventListener("submit", async function (event) {
     - Use .value
     - Use .trim()
   */
-  const email = ________________________________;
-
+  const email = document.getElementById("email").value.trim();
+  console.log(email);
+  console.log(!email);
   /*
     LACUNA 3:
     Capture o valor digitado no campo de senha.
@@ -38,7 +40,9 @@ form.addEventListener("submit", async function (event) {
     - Use .value
     - Nesse caso, não é obrigatório usar .trim()
   */
-  const password = ________________________________;
+  const password = document.getElementById("password").value;
+  console.log(password);
+  console.log(!password);
 
   message.textContent = "";
   message.className = "message";
@@ -53,7 +57,7 @@ form.addEventListener("submit", async function (event) {
     - Caso algum campo esteja vazio, exiba uma mensagem de erro
     - Depois, interrompa a execução da função com return
   */
-  if (_______________________________) {
+  if (!name || !email || !password) {
     showMessage("Preencha todos os campos.", "error");
     return;
   }
@@ -66,7 +70,7 @@ form.addEventListener("submit", async function (event) {
     - Use a propriedade .length
     - Compare se a quantidade de caracteres é menor que 8
   */
-  if (_______________________________) {
+  if (password.length < 8) {
     showMessage("A senha deve ter pelo menos 8 caracteres.", "error");
     return;
   }
@@ -88,15 +92,15 @@ form.addEventListener("submit", async function (event) {
       - O corpo da requisição deve enviar name, email e password
       - Use JSON.stringify()
     */
-    const response = await fetch(_______________________________, {
-      method: _______________________________,
+    const response = await fetch("https://refactored-lamp-97vvv4v45g9xhp4jv-3000.app.github.dev/users", {
+      method: "POST",
       headers: {
-        "Content-Type": _______________________________
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        name: _______________________________,
-        email: _______________________________,
-        password: _______________________________
+        name: name,
+        email: email,
+        password: password
       })
     });
 
@@ -108,7 +112,7 @@ form.addEventListener("submit", async function (event) {
       - Use await
       - Use o método .json() da resposta
     */
-    const data = ________________________________;
+    const data = await response.json();
 
     /*
       LACUNA 8:
@@ -119,7 +123,7 @@ form.addEventListener("submit", async function (event) {
       - Caso a resposta não esteja ok, exiba a mensagem retornada pela API
       - Depois, use return para parar a execução
     */
-    if (_______________________________) {
+    if (!response.ok) {
       showMessage(data.message || "Erro ao criar usuário.", "error");
       return;
     }
@@ -133,7 +137,7 @@ form.addEventListener("submit", async function (event) {
       Orientações:
       - Use o método reset() do formulário
     */
-    ________________________________;
+    form.reset();
 
   } catch (error) {
     showMessage("Não foi possível conectar ao servidor.", "error");
