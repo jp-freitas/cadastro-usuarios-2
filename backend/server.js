@@ -51,7 +51,7 @@ app.post("/users", async (req, res) => {
       - Os dados vêm dentro de req.body
       - Use desestruturação de objeto
     */
-    const { name,email,passaword } = req.body;
+    const { name, email, password } = req.body;
 
     /*
       LACUNA 4:
@@ -62,7 +62,7 @@ app.post("/users", async (req, res) => {
       - Use operador lógico OU
       - Caso algum campo esteja ausente, retorne status 400
     */
-    if (!name || !email || !passaword) {
+    if (!name || !email || !password) {
       return res.status(400).json({
         message: "Nome, e-mail e senha são obrigatórios."
       });
@@ -76,7 +76,7 @@ app.post("/users", async (req, res) => {
       - Use a propriedade length da senha
       - Caso a senha tenha menos de 8 caracteres, retorne status 400
     */
-    if (passaword.length < 8) {
+    if (password.length < 8) {
       return res.status(400).json({
         message: "A senha deve ter pelo menos 8 caracteres."
       });
@@ -93,7 +93,7 @@ app.post("/users", async (req, res) => {
       - O valor do e-mail deve ser passado como parâmetro
       - Armazene o resultado em uma constante chamada existingUser
     */
-    const [existingUser] = await db.prepare(
+    const existingUser = db.prepare(
       "SELECT id_user FROM users WHERE email= ?"      
     ).get(email);
 
@@ -133,7 +133,7 @@ app.post("/users", async (req, res) => {
       - Passe a senha original e a quantidade de rounds
       - Armazene o resultado em uma constante chamada passwordHash
     */
-    const passwordHash = await bcrypt.hash (passaword,saltRounds);
+    const passwordHash = await bcrypt.hash (password,saltRounds);
 
     /*
       LACUNA 10:
@@ -145,8 +145,8 @@ app.post("/users", async (req, res) => {
       - Os campos são name, email e password_hash
       - Use parâmetros para evitar concatenar valores diretamente no SQL
     */
-    await db.prepare(
-      "INSERT INTO users (name, email, passaword_hash) VALUES (?, ?, ?"
+    db.prepare(
+      "INSERT INTO users (name, email, password_hash) VALUES (?, ?, ?)"
     ).run(name, email, passwordHash);
 
     return res.status(201).json({
@@ -172,5 +172,5 @@ app.post("/users", async (req, res) => {
   - Exiba uma mensagem no console informando que o servidor está rodando
 */
 app.listen(3000, () => {
-  console.leg ("Servidor rodando em http://localhost:3000")
+  console.log ("Servidor rodando em http://localhost:3000")
 });
